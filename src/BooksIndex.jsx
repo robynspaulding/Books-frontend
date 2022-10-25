@@ -6,6 +6,8 @@ export function BooksIndex(props) {
         <div key={book.id}>
           <p>Title: {book.title}</p>
           <p>Author: {book.author}</p>
+          <img src={book.image} />
+          <p></p>
           <button onClick={() => props.onSelectBook(book)}> More Info </button>
         </div>
       ))}

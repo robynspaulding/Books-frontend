@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BooksIndex } from "./BooksIndex";
+import { BooksNew } from "./BooksNew";
 import { BooksShow } from "./BooksShow";
 import { Modal } from "./Modal";
 
@@ -25,13 +26,39 @@ export function Home() {
     setIsBooksShowVisable(false);
   };
 
+  const handleCreateBook = (params) => {
+    axios.post("http://localhost:3000/books.json", params).then((response) => {
+      console.log(response.data);
+      const newBook = response.data;
+      setBooks([...books, newBook]);
+    });
+  };
+
+  const handleUpdateBook = (id, params) => {
+    axios.patch("http://localhost:3000/books/" + id + ".json", params).then((response) => {
+      const updatedBook = response.data;
+      setCurrentBook(updatedBook);
+
+      setBooks(
+        books.map((book) => {
+          if (book.id === updatedBook.id) {
+            return updatedBook;
+          } else {
+            return book;
+          }
+        })
+      );
+    });
+  };
+
   useEffect(handleIndexBooks, []);
 
   return (
     <div>
+      <BooksNew onCreateBook={handleCreateBook} />
       <BooksIndex books={books} onSelectBook={handleShowBook} />
       <Modal show={isBooksShowVisable} onClose={handleHideBook}>
-        <BooksShow book={currentBook} />
+        <BooksShow book={currentBook} onUpdateBook={handleUpdateBook} />
       </Modal>
     </div>
   );
