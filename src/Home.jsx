@@ -51,6 +51,14 @@ export function Home() {
     });
   };
 
+  const handleDestroyBook = (book) => {
+    axios.delete("http://localhost:3000/books/" + book.id + ".json").then((response) => {
+      console.log("book successfully deleted");
+      setBooks(books.filter((b) => b.id !== book.id));
+      handleHideBook();
+    });
+  };
+
   useEffect(handleIndexBooks, []);
 
   return (
@@ -58,7 +66,7 @@ export function Home() {
       <BooksNew onCreateBook={handleCreateBook} />
       <BooksIndex books={books} onSelectBook={handleShowBook} />
       <Modal show={isBooksShowVisable} onClose={handleHideBook}>
-        <BooksShow book={currentBook} onUpdateBook={handleUpdateBook} />
+        <BooksShow book={currentBook} onUpdateBook={handleUpdateBook} onDestroyBook={handleDestroyBook} />
       </Modal>
     </div>
   );

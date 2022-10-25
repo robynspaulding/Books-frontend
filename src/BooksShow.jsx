@@ -6,13 +6,20 @@ export function BooksShow(props) {
     props.onUpdateBook(props.book.id, params);
     event.target.reset();
   };
+  const handleClick = () => {
+    props.onDestroyBook(props.book);
+  };
+
   return (
     <div id="books-show">
       <h1>Book Info</h1>
+      <img src={props.book.image} />
       <p>Title: {props.book.title}</p>
       <p>Author: {props.book.author}</p>
       <p>Description: {props.book.description}</p>
       <p>Language: {props.book.language}</p>
+
+      <button onClick={handleClick}>Delete Book</button>
 
       <form onSubmit={handleSubmit}>
         <div>
